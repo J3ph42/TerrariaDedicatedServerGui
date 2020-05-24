@@ -92,7 +92,7 @@
             this.btnCommandText = new System.Windows.Forms.Button();
             this.tbCommand = new System.Windows.Forms.TextBox();
             this.lbController = new System.Windows.Forms.ListBox();
-            this.tpBannlist = new System.Windows.Forms.TabPage();
+            this.tpBanlist = new System.Windows.Forms.TabPage();
             this.msTop.SuspendLayout();
             this.ssBottom.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -185,7 +185,7 @@
             this.tcMain.Controls.Add(this.tpMotd);
             this.tcMain.Controls.Add(this.tpWorlds);
             this.tcMain.Controls.Add(this.tbConsole);
-            this.tcMain.Controls.Add(this.tpBannlist);
+            this.tcMain.Controls.Add(this.tpBanlist);
             this.tcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcMain.ItemSize = new System.Drawing.Size(100, 20);
             this.tcMain.Location = new System.Drawing.Point(0, 25);
@@ -889,14 +889,14 @@
             this.lbController.Size = new System.Drawing.Size(776, 368);
             this.lbController.TabIndex = 0;
             // 
-            // tpBannlist
+            // tpBanlist
             // 
-            this.tpBannlist.Location = new System.Drawing.Point(4, 24);
-            this.tpBannlist.Name = "tpBannlist";
-            this.tpBannlist.Size = new System.Drawing.Size(776, 482);
-            this.tpBannlist.TabIndex = 4;
-            this.tpBannlist.Text = "Bannlist";
-            this.tpBannlist.UseVisualStyleBackColor = true;
+            this.tpBanlist.Location = new System.Drawing.Point(4, 24);
+            this.tpBanlist.Name = "tpBanlist";
+            this.tpBanlist.Size = new System.Drawing.Size(776, 482);
+            this.tpBanlist.TabIndex = 4;
+            this.tpBanlist.Text = "Banlist";
+            this.tpBanlist.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
@@ -987,7 +987,7 @@
         private System.Windows.Forms.ComboBox cbConsole;
         private System.Windows.Forms.Button btnCommand;
         private System.Windows.Forms.ToolStripStatusLabel tsslServerValue;
-        private System.Windows.Forms.TabPage tpBannlist;
+        private System.Windows.Forms.TabPage tpBanlist;
         private System.Windows.Forms.Button btnCommandExit;
         private System.Windows.Forms.Button btnCommandExitNoS;
         private System.Windows.Forms.Button btnChatText;
