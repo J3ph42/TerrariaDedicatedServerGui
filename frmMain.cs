@@ -32,10 +32,10 @@ namespace TerrariaDedicatedServerGUI
 
         delegate void SetItemsCallback(string text);
 
-        private String sAppPath = Application.StartupPath;
+        private String strAppPath = Application.StartupPath;
 
         private SetConfig tmpConfig = new SetConfig();
-        private Controller tmpController = new Controller();
+        private InputRedirector myInputRedirector = new InputRedirector();
         private GetIpAdress tmpGetIpAdress = new GetIpAdress();
 
         #endregion
@@ -67,7 +67,7 @@ namespace TerrariaDedicatedServerGUI
 
             this.tcMain.SelectedIndexChanged += new EventHandler(tcMain_SelectedIndexChanged);
 
-            this.FormClosing += new FormClosingEventHandler(frmMain_FormClosing);
+            this.FormClosing += new FormClosingEventHandler(FrmMain_FormClosing);
         }
 
         #endregion
@@ -77,12 +77,12 @@ namespace TerrariaDedicatedServerGUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this.tmpConfig.Init(this.sAppPath);
+            this.tmpConfig.Init(this.strAppPath);
 
-            this.tmpController.ProgressChanged += new Controller.EventHandler(tmpController_ProgressChanged);
-            this.tmpController.Completed += new Controller.EventHandler(tmpController_Completed);
+            this.myInputRedirector.ProgressChanged += new InputRedirector.EventHandler(tmpController_ProgressChanged);
+            this.myInputRedirector.Completed += new InputRedirector.EventHandler(tmpController_Completed);
 
-            this.tmpController.Init();
+            this.myInputRedirector.Init();
 
             this.tmpGetIpAdress.Completed += new GetIpAdress.EventHandler(tmpGetIpAdress_Completed);
 
@@ -385,6 +385,7 @@ namespace TerrariaDedicatedServerGUI
 
         private void tsmiStartServer_Click(object sender, EventArgs e)
         {
+            // Want to make sure path to server is polulated
             if (String.IsNullOrEmpty(this.tmpConfig.ServerPath))
             {
                 MessageBox.Show("Setup Server Path first!", "Server Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -399,7 +400,7 @@ namespace TerrariaDedicatedServerGUI
 
             if (this.lbMaps.SelectedIndex != -1)
             {
-                this.tmpController.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
+                this.myInputRedirector.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
             }
             else
             {
@@ -413,7 +414,7 @@ namespace TerrariaDedicatedServerGUI
                 }
             }
 
-            if (!this.tmpController.Running)
+            if (!this.myInputRedirector.Running)
             {
                 if (!File.Exists(this.tmpConfig.AppPath + "config.xml"))
                 {
@@ -432,34 +433,34 @@ namespace TerrariaDedicatedServerGUI
                 this.lbController.Items.Add("");
                 this.lbController.SelectedIndex = this.lbController.Items.Count - 1;
 
-                this.tmpController.Arguments = "-config " + this.tmpConfig.ServerPath + "\\serverconfig.txt";
-                this.tmpController.Arguments = "-port " + this.tmpConfig.Port.ToString();
-                this.tmpController.Arguments = "-players " + this.tmpConfig.Players.ToString();
-                this.tmpController.Arguments = "-motd \"" + this.tbMotd.Text + "\"";
+                this.myInputRedirector.Arguments = "-config " + this.tmpConfig.ServerPath + "\\serverconfig.txt";
+                this.myInputRedirector.Arguments = "-port " + this.tmpConfig.Port.ToString();
+                this.myInputRedirector.Arguments = "-players " + this.tmpConfig.Players.ToString();
+                this.myInputRedirector.Arguments = "-motd \"" + this.tbMotd.Text + "\"";
 
                 if (this.tmpConfig.Password.Length >= 1)
                 {
-                    this.tmpController.Arguments = "-password " + this.tmpConfig.Password;
+                    this.myInputRedirector.Arguments = "-password " + this.tmpConfig.Password;
                 }
 
-                this.tmpController.Arguments = "-banlist " + this.tmpConfig.ServerPath + "banlist.txt";
+                this.myInputRedirector.Arguments = "-banlist " + this.tmpConfig.ServerPath + "banlist.txt";
 
                 if (this.tmpConfig.Secure)
                 {
-                    this.tmpController.Arguments = "-secure";
+                    this.myInputRedirector.Arguments = "-secure";
                 }
 
                 if (this.tmpConfig.NoUPNP)
                 {
-                    this.tmpController.Arguments = "-noupnp";
+                    this.myInputRedirector.Arguments = "-noupnp";
                 }
 
-                this.tmpController.Priority = this.tmpConfig.Priority;
+                this.myInputRedirector.Priority = this.tmpConfig.Priority;
 
-                this.tmpController.WorkingPath = this.tmpConfig.ServerPath;
-                this.tmpController.FileName = "\\TerrariaServer.exe";
+                this.myInputRedirector.WorkingPath = this.tmpConfig.ServerPath;
+                this.myInputRedirector.FileName = "\\TerrariaServer.exe";
 
-                this.tmpController.DoJobAsync();
+                this.myInputRedirector.DoJobAsync();
                 this.tbCommand.Select();
             }
         }
@@ -471,34 +472,34 @@ namespace TerrariaDedicatedServerGUI
 
         private void btnCommandText_Click(object sender, EventArgs e)
         {
-            this.tmpController.Command = this.tbCommand.Text;
+            this.myInputRedirector.Command = this.tbCommand.Text;
             this.tbCommand.Clear();
             this.tbCommand.Select();
         }
 
         private void btnCommand_Click(object sender, EventArgs e)
         {
-            this.tmpController.Command = this.cbConsole.SelectedItem.ToString();
+            this.myInputRedirector.Command = this.cbConsole.SelectedItem.ToString();
         }
 
         private void btnCommandExit_Click(object sender, EventArgs e)
         {
-            this.tmpController.Command = "exit";
+            this.myInputRedirector.Command = "exit";
         }
 
         private void btnCommandExitNoS_Click(object sender, EventArgs e)
         {
-            this.tmpController.Command = "exit-nosave";
+            this.myInputRedirector.Command = "exit-nosave" + Environment.NewLine;
         }
 
         private void btnChatText_Click(object sender, EventArgs e)
         {
-            this.tmpController.Command = "say " + this.tbCommandChat.Text;
+            this.myInputRedirector.Command = "say " + this.tbCommandChat.Text;
         }
 
         private void btnCommandSave_Click(object sender, EventArgs e)
         {
-            this.tmpController.Command = "save";
+            this.myInputRedirector.Command = "save";
         }
 
         #endregion
@@ -509,13 +510,13 @@ namespace TerrariaDedicatedServerGUI
         private void tbAdmin_TextChanged(object sender, EventArgs e)
         {
             this.tmpConfig.AdminName = this.tbAdmin.Text;
-            this.tmpController.Admin = this.tbAdmin.Text;
+            this.myInputRedirector.Admin = this.tbAdmin.Text;
         }
 
         private void chbAdmin_CheckedChanged(object sender, EventArgs e)
         {
             this.tmpConfig.AllowAdmin = this.chbAdmin.Checked;
-            this.tmpController.AllowAdmin = this.chbAdmin.Checked;
+            this.myInputRedirector.AllowAdmin = this.chbAdmin.Checked;
         }
 
         #endregion
@@ -526,37 +527,37 @@ namespace TerrariaDedicatedServerGUI
         private void chbUserTime_CheckedChanged(object sender, EventArgs e)
         {
             this.tmpConfig.AllowUserInteract = this.chbUserInteract.Checked;
-            this.tmpController.AllowUserTime = this.chbUserInteract.Checked;
+            this.myInputRedirector.AllowUserTime = this.chbUserInteract.Checked;
         }
 
         #endregion
 
         #region Controller - ProgressChanged
-        //Controller - ProgressChanged
+        //InputRedirector - ProgressChanged
 
         private void tmpController_ProgressChanged()
         {
-            SetListBox(this.tmpController.Buffer);
+            SetListBox(this.myInputRedirector.Buffer);
 
             string sRunning = "Server offline";
 
-            if (this.tmpController.Running)
+            if (this.myInputRedirector.Running)
             {
                 sRunning = "Server online";
             }
-            this.tsslServerValue.Text = String.Format("{0} Player, {1}", this.tmpController.Player, sRunning);
+            this.tsslServerValue.Text = String.Format("{0} Player, {1}", this.myInputRedirector.Player, sRunning);
         }
 
         #endregion
 
         #region Controller - Completed
-        //Controller - Completed
+        //InputRedirector - Completed
 
         private void tmpController_Completed()
         {
             string sRunning = String.Empty;
 
-            if (this.tmpController.Running)
+            if (this.myInputRedirector.Running)
             {
                 sRunning = "Server online";
             }
@@ -564,7 +565,7 @@ namespace TerrariaDedicatedServerGUI
             {
                 sRunning = "Server offline";
             }
-            this.tsslServerValue.Text = String.Format("{0} Player, {1}", this.tmpController.Player, sRunning);
+            this.tsslServerValue.Text = String.Format("{0} Player, {1}", this.myInputRedirector.Player, sRunning);
             this.lbController.Items.Add(sRunning);
             this.lbController.SelectedIndex = this.lbController.Items.Count - 1;
         }
@@ -606,9 +607,9 @@ namespace TerrariaDedicatedServerGUI
         #region Form - Closing
         //Form - Closing
 
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.tmpController.Running)
+            if (this.myInputRedirector.Running)
             {
                 MessageBox.Show("Server is still running!\nPlease Shutdown Server by Console with exit or exit-nosave", "Server still running", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
