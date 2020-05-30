@@ -1,4 +1,5 @@
-﻿#### Terraria Dedicated Server Graphic User Interface
+#### Terraria Dedicated Server Graphic User Interface
+#### BASED ON ORIGINAL WORK FROM: https://github.com/oiisamiio/TerrariaDedicatedServerGui
 
 ![Screenshot](http://www.web-regensburg.de/terraria/Terraria.png "Screenshot")
 
@@ -7,23 +8,24 @@ Actual Features:
 * User can type in Chat **time** to get Game Time and Server Time
 * User can type in Chat **dawn**, **noon**, **dusk** or **midnight** to change Server time (default: off)
 * Admin can send Commands from client (default: off)
-(dirty! None Admin User could type Chat Message like: blah <adminname> server command)
-* Admin can force time. Type **forcedawn**, **forcenoon**, **forcedusk** or **forcemidngiht**. Type **resetforce** for reset time
+(dirty! None Admin User could type Chat Message like: blah <adminname> server command) (Probably fixable)
+* Admin can force time. Type **forcedawn**, **forcenoon**, **forcedusk** or **forcemidnight**. Type **resetforce** for reset time
 * Shows external Server IP
 * Count Player/show playing Players
 * Support TShock Server Mod
 
+In Progress:
+* Actually send commands to server console!
+
 Actual Restrictions: 
-* only English supported
+* English only
 * Server Config not complete implemented yet
 * Banlist Config not implemented yet
 
-Knowing Bugs (Please Report Bugs): 
-* none
+Known Bugs (Please Report Bugs): 
+* Commands won't send to server console
 
 RoadMap: 
+* tshock?
 * add Server Logging
-* add Multi Server Support (different Ports)
-* add Multi Core Support for manage CPU Cores using Server/Client (Example Server use CPU Core 1, Client use CPU Core 2)
-* Player Vote for Kick/Ban (Example 4 Player online: required votes xx > 4 / 2 min 2 votes)
-* Watchdog (restart if Server crashs)
+* Watchdog (restart if Server crashes)
